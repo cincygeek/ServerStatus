@@ -1,10 +1,12 @@
 <?php
+$array['lastdown'] = $lastdown[0];
+
 function sec2human($time) {
   $seconds = $time%60;
-	$mins = floor($time/60)%60;
-	$hours = floor($time/60/60)%24;
-	$days = floor($time/60/60/24);
-	return $days > 0 ? $days . ' day'.($days > 1 ? 's' : '') : $hours.':'.$mins.':'.$seconds;
+  $mins = floor($time/60)%60;
+  $hours = floor($time/60/60)%24;
+  $days = floor($time/60/60/24);
+  return $days > 0 ? $days . ' day'.($days > 1 ? 's' : '') : $hours.':'.$mins.':'.$seconds;
 }
 
 $array = array();
@@ -13,6 +15,7 @@ $uptime = fgets($fh);
 fclose($fh);
 $uptime = explode('.', $uptime, 2);
 $array['uptime'] = sec2human($uptime[0]);
+
 
 
 $fh = fopen('/proc/meminfo', 'r');
@@ -64,5 +67,12 @@ $array['load'] = $load[0];
 $array['online'] = '<div class="progress">
 <div class="bar bar-success" style="width: 100%;"><small>Up</small></div>
 </div>';
+$today= date("d");
+$month= date("m");
+$year= date("Y");
+$down = $today - sec2human($uptime[0]); 
+$array['lastdown'] = $month .'/'. $down .'/'. $year;;
 
 echo json_encode($array);
+
+
